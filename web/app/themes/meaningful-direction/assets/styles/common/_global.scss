@@ -1,0 +1,418 @@
+/* global box-sizing */
+*,
+*:after,
+*:before {
+    box-sizing: border-box;
+    text-rendering: optimizeLegibility;
+}
+
+/* html element 62.5% font-size for REM use */
+html {
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: $color-bg-body;
+    overflow-x: hidden;
+}
+
+html,
+body {
+    overflow-x: clip;
+}
+body {
+    position: relative;
+}
+
+/* clear */
+.clear:before,
+.clear:after {
+    content: ' ';
+    display: table;
+}
+
+.clear:after {
+    clear: both;
+}
+
+.clear {
+    zoom: 1;
+}
+
+img {
+    max-width: 100%;
+    vertical-align: bottom;
+    height: auto;
+}
+
+/* Lightspeed Lazy load fade in */
+img[data-lazyloaded] {
+    opacity: 0;
+}
+
+img.litespeed-loaded {
+    -webkit-transition: opacity 0.5s linear 0.2s;
+    -moz-transition: opacity 0.5s linear 0.2s;
+    transition: opacity 0.5s linear 0.2s;
+    opacity: 1;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:focus {
+    outline: 0;
+}
+
+a:hover,
+a:active {
+    outline: 0;
+    cursor: pointer;
+}
+
+input:focus {
+    border: 1px solid $color-ui-focus-ring;
+    outline: 0;
+}
+
+blockquote {
+    margin: 25px 0;
+    padding: 25px 0 25px 5vw;
+    font-family: $font-heading;
+    font-style: italic;
+    font-weight: $font-weight-heading-em;
+    color: $color-text-soft;
+    border-top: 1px solid $color-border-default;
+    border-bottom: 1px solid $color-border-default;
+}
+
+blockquote p {
+    font-family: inherit;
+    font-style: italic;
+}
+
+/*------------------------------------*\
+    STRUCTURE
+\*------------------------------------*/
+/* wrapper */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    min-height: 100vh;
+    position: relative;
+    width: 100%;
+    max-width: 2560px;
+}
+
+.container {
+    /* max-width:1280px;  */
+    // max-width:1110px;
+    max-width: 1320px;
+    /* max-width:1190px;  */
+    align-self: center;
+    flex: 1 auto;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    padding: 0 20px;
+}
+
+.pagination {
+    font-size: $font-size-body-small;
+}
+
+.embed-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 30px;
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+    height: auto;
+}
+
+.embed-container iframe,
+.embed-container object,
+.embed-container embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+/*------------------------------------*\
+    PAGES
+\*------------------------------------*/
+/*------------------------------------*\
+    IMAGES
+\*------------------------------------*/
+
+/*------------------------------------*\
+    ACF GOOGLE MAP
+\*------------------------------------*/
+
+.acf-map {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    max-height: 600px;
+    border: #ccc solid 1px;
+    margin: 20px 0;
+}
+
+/* Fixes potential theme css conflict. */
+.acf-map img {
+    max-width: inherit !important;
+}
+
+/*------------------------------------*\
+    RESPONSIVE
+\*------------------------------------*/
+@media only screen and (min-width: 320px) {
+}
+
+@media only screen and (min-width: 480px) {
+}
+
+@media only screen and (min-width: 769px) {
+}
+
+@media only screen and (min-width: 1024px) {
+}
+
+@media only screen and (min-width: 1140px) {
+}
+
+@media only screen and (min-width: 1280px) {
+}
+
+/*------------------------------------*\
+    MISC
+\*------------------------------------*/
+::selection {
+    background: $color-selection-bg;
+    color: $color-text-heading;
+    text-shadow: none;
+}
+
+::-webkit-selection {
+    background: $color-selection-bg;
+    color: $color-text-heading;
+    text-shadow: none;
+}
+
+::-moz-selection {
+    background: $color-selection-bg;
+    color: $color-text-heading;
+    text-shadow: none;
+}
+
+/*------------------------------------*\
+    WORDPRESS CORE
+\*------------------------------------*/
+.alignnone {
+    margin: 5px 20px 20px 0;
+}
+
+.aligncenter,
+div.aligncenter {
+    display: block;
+    margin: 5px auto 5px auto;
+}
+
+.alignright {
+    float: right;
+    margin: 5px 0 20px 20px;
+}
+
+.alignleft {
+    float: left;
+    margin: 5px 20px 20px 0;
+}
+
+a img.alignright {
+    float: right;
+    margin: 5px 0 20px 20px;
+}
+
+a img.alignnone {
+    margin: 5px 20px 20px 0;
+}
+
+a img.alignleft {
+    float: left;
+    margin: 5px 20px 20px 0;
+}
+
+a img.aligncenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.wp-caption {
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    max-width: 96%;
+    padding: 5px 3px 10px;
+    text-align: center;
+}
+
+.wp-caption.alignnone {
+    margin: 5px 20px 20px 0;
+}
+
+.wp-caption.alignleft {
+    margin: 5px 20px 20px 0;
+}
+
+.wp-caption.alignright {
+    margin: 5px 0 20px 20px;
+}
+
+.wp-caption img {
+    border: 0 none;
+    height: auto;
+    margin: 0;
+    max-width: 98.5%;
+    padding: 0;
+    width: auto;
+}
+
+.wp-caption .wp-caption-text,
+.gallery-caption {
+    font-size: 11px;
+    line-height: 17px;
+    margin: 0;
+    padding: 0 4px 5px;
+}
+
+/* .sticky {} */
+
+/* .bypostauthor {} */
+
+/*------------------------------------*\
+    PRINT
+\*------------------------------------*/
+@media print {
+    * {
+        background: transparent !important;
+        box-shadow: none !important;
+        color: #000 !important;
+        text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    a[href]:after {
+        content: ' (' attr(href) ')';
+    }
+
+    abbr[title]:after {
+        content: ' (' attr(title) ')';
+    }
+
+    .ir a:after,
+    a[href^='javascript:']:after,
+    a[href^='#']:after {
+        content: '';
+    }
+
+    pre,
+    blockquote {
+        page-break-inside: avoid;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+
+    img {
+        max-width: 100% !important;
+    }
+
+    @page {
+        margin: 0.5cm;
+    }
+
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+
+    .nav,
+    .sidebar,
+    .home-slider,
+    #respond {
+        display: none;
+    }
+
+    @page {
+        margin: 2cm;
+    }
+}
+
+.page-heading__circle {
+    fill: #0abbd7;
+    opacity: 0;
+    animation: show 1s forwards 2s;
+}
+
+.page-heading__vertical-line {
+    stroke: #0abbd7;
+    stroke-width: 2;
+    animation: draw 5s forwards;
+}
+
+/* New: define the 'draw' animation */
+@keyframes draw {
+    0% {
+        stroke-dasharray: 0, 200;
+    }
+    100% {
+        stroke-dasharray: 200, 200;
+    }
+}
+
+/* New: define the 'show' animation */
+@keyframes show {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.flex-center-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-v-center-child {
+    display: flex;
+    align-items: center;
+}
+
+.text-center {
+    text-align: center;
+}

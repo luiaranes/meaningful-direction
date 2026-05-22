@@ -1,0 +1,111 @@
+html {
+    font-family: $font-body;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+body {
+    font-family: $font-body;
+    font-weight: $font-weight-body;
+    font-size: $font-size-body;
+    line-height: $line-height-body;
+    color: $color-text-body;
+}
+
+p,
+li,
+dt,
+dd,
+label {
+    font-family: $font-body;
+    font-weight: $font-weight-body;
+    font-size: $font-size-body;
+    line-height: $line-height-body;
+    color: $color-text-body;
+}
+
+a {
+    font-family: inherit;
+    transition: color 0.18s ease;
+}
+
+a:hover {
+    color: $color-link-hover;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: $font-heading;
+    color: $color-text-heading;
+    margin: 0 0 0.5em;
+}
+
+h1,
+h2 {
+    font-weight: $font-weight-heading;
+    letter-spacing: $letter-spacing-heading-soft;
+    line-height: $line-height-heading;
+}
+
+h1 {
+    font-size: $font-size-h1;
+    letter-spacing: $letter-spacing-heading;
+}
+
+h2 {
+    font-size: $font-size-h2;
+}
+
+h3 {
+    font-size: $font-size-h3;
+    font-weight: $font-weight-body-medium;
+    font-style: italic;
+    line-height: 1.35;
+}
+
+h4 {
+    font-size: $font-size-h4;
+    font-weight: $font-weight-heading-em;
+}
+
+h5 {
+    font-size: $font-size-h5;
+    font-weight: $font-weight-body-medium;
+}
+
+h6 {
+    font-size: $font-size-h6;
+    font-weight: $font-weight-body-medium;
+}
+
+strong,
+b {
+    font-family: $font-body;
+    font-weight: $font-weight-heading-em;
+    color: $color-text-heading;
+}
+
+@media only screen and (max-width: 720px) {
+    body,
+    p,
+    li {
+        font-size: $font-size-body-small;
+    }
+
+    h1 {
+        font-size: 3.6rem;
+    }
+
+    h2 {
+        font-size: 2.8rem;
+    }
+
+    h3 {
+        font-size: 2.2rem;
+    }
+}

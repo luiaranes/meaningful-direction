@@ -1,0 +1,75 @@
+// -----------------------------------------------------------------------------
+// Palette — Meaningful Direction (Senior Placement) / ai-docs semantic pattern
+// -----------------------------------------------------------------------------
+
+// Base (descriptive names)
+$color-parchment-cream: #f5f0e8;
+$color-linen-warm: #ede6d6;
+$color-sand-path: #c4a882;
+$color-warm-gold: #d6a254;
+$color-warm-gold-deep: #b8893e;
+$color-navy-clay: #2b3a52;
+$color-sage-green: #8b9e82;
+$color-sage-green-deep: #6f8268;
+$color-sky-blue: #8ba8c4;
+$color-sky-blue-deep: #6e8dab;
+$color-charcoal-soft: #4a5870;
+$color-charcoal-muted: #8a7e6e;
+$color-white: #fff;
+
+// Semantic aliases (prefer these in layouts / components)
+$color-text-heading: $color-navy-clay;
+$color-text-body: $color-navy-clay;
+$color-text-soft: $color-charcoal-soft;
+$color-text-muted: $color-charcoal-muted;
+
+$color-bg-body: $color-parchment-cream;
+$color-bg-surface-warm: $color-linen-warm;
+
+$color-border-default: $color-sand-path;
+$color-accent-primary: $color-warm-gold;
+$color-accent-primary-strong: $color-warm-gold-deep;
+$color-accent-cool: $color-sky-blue;
+
+$color-eyebrow: $color-sage-green-deep;
+$color-link-hover: $color-navy-clay;
+
+$color-ui-focus-ring: $color-warm-gold-deep;
+$color-selection-bg: rgba($color-sky-blue-deep, 0.35);
+
+// -----------------------------------------------------------------------------
+// Typography — fonts loaded in functions.php (`sperling_add_google_fonts`)
+// Sizes use rem (`html { font-size: 62.5%; }` → 1rem = 10px)
+// -----------------------------------------------------------------------------
+$font-heading: 'Cormorant Garamond', Georgia, serif;
+$font-body: 'Jost', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+$font-system: $font-body;
+
+$font-weight-body: 300;
+$font-weight-body-medium: 400;
+$font-weight-heading: 600;
+$font-weight-heading-em: 500;
+
+$line-height-body: 1.75;
+$line-height-heading-tight: 1.2;
+$line-height-heading: 1.25;
+
+// Desktop scale (prototype-aligned)
+$font-size-body: 1.8rem; // 18px
+$font-size-body-small: 1.7rem; // 17px — mobile body
+$font-size-h1: 5.2rem; // 52px
+$font-size-h2: 3.8rem; // 38px
+$font-size-h3: 2.6rem; // 26px
+$font-size-h4: 2rem; // 20px
+$font-size-h5: 1.8rem;
+$font-size-h6: 1.6rem;
+
+$letter-spacing-heading: -0.01em;
+$letter-spacing-heading-soft: -0.005em;
+$letter-spacing-eyebrow: 0.18em;
+
+// -----------------------------------------------------------------------------
+// Legacy / tooling
+// -----------------------------------------------------------------------------
+// Break Points (Bulma-aligned where used)
+// tablet 769, desktop 1024 — match theme media queries below when extended

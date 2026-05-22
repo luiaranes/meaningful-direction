@@ -1,0 +1,45 @@
+# Application
+web/app/plugins/*
+!web/app/plugins/.gitkeep
+web/app/mu-plugins/*/
+web/app/themes/twentytwentyfour/
+web/app/upgrade
+web/app/uploads/*
+!web/app/uploads/.gitkeep
+web/app/cache/*
+
+# WordPress
+web/wp
+web/.htaccess
+
+# Dev
+node_modules/
+
+# Logs
+*.log
+
+# Dotenv
+.env
+.env.*
+!.env.example
+
+# Composer
+/vendor
+
+# WP-CLI
+wp-cli.local.yml
+
+# Others
+.ash_history
+.Trash*
+.DS_Store
+# *.lock
+*-lock.json
+!web/app/themes/*/package-lock.json
+.vscode
+openai_logs.txt
+
+# Theme
+web/app/themes/*/dist/
+web/app/themes/*/vendor/
+web/app/smush-webp/

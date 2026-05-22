@@ -1,0 +1,257 @@
+/* Our Process — tabbed steps (standalone / components.jsx Process) */
+
+@keyframes md-process-fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.md-site-process {
+	padding: clamp(72px, 10vw, 128px) 0;
+}
+
+.md-site-process .eyebrow {
+	font-family: $font-body;
+	font-weight: 500;
+	font-size: 13px;
+	letter-spacing: $letter-spacing-eyebrow;
+	text-transform: uppercase;
+	color: $color-eyebrow;
+	margin: 0 0 18px;
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.md-site-process .eyebrow::before {
+	content: "";
+	width: 28px;
+	height: 1px;
+	background-color: $color-eyebrow;
+	display: inline-block;
+}
+
+.md-site-process .process-head {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: clamp(32px, 6vw, 80px);
+	align-items: end;
+	margin-bottom: clamp(48px, 7vw, 80px);
+}
+
+@media screen and (max-width: 760px) {
+	.md-site-process .process-head {
+		grid-template-columns: 1fr;
+	}
+}
+
+.md-site-process .process-h2 {
+	font-size: $font-size-h2;
+	font-weight: $font-weight-heading;
+	line-height: $line-height-heading;
+	color: $color-text-heading;
+	letter-spacing: $letter-spacing-heading-soft;
+	margin: 0;
+}
+
+.md-site-process .process-intro {
+	color: $color-text-soft;
+	max-width: 44ch;
+	margin: 0;
+}
+
+.md-site-process .process-tabs {
+	display: grid;
+	grid-template-columns: 320px 1fr;
+	gap: clamp(28px, 4vw, 56px);
+	align-items: start;
+}
+
+@media screen and (max-width: 880px) {
+	.md-site-process .process-tabs {
+		grid-template-columns: 1fr;
+	}
+}
+
+.md-site-process .step-rail {
+	display: flex;
+	flex-direction: column;
+	border-left: 1px solid $color-border-default;
+}
+
+.md-site-process .step-tab {
+	margin: 0;
+	padding: 22px 24px;
+	/* Kill UA / theme button borders so only left rail line shows */
+	border: 0;
+	border-left: 2px solid transparent;
+	border-radius: 0;
+	box-shadow: none;
+	-webkit-appearance: none;
+	appearance: none;
+	margin-left: -1px;
+	display: flex;
+	gap: 18px;
+	align-items: flex-start;
+	text-align: left;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	transition: background-color 0.22s ease, border-color 0.22s ease;
+	cursor: pointer;
+	background: transparent;
+	color: inherit;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.md-site-process .step-tab:hover {
+	background-color: rgba(217, 196, 167, 0.18);
+}
+
+.md-site-process .step-tab.active {
+	background-color: $color-bg-surface-warm;
+	border-left: 2px solid $color-accent-primary;
+}
+
+.md-site-process .step-tab:focus {
+	outline: none;
+}
+
+.md-site-process .step-tab:focus-visible {
+	outline: 2px solid $color-ui-focus-ring;
+	outline-offset: 2px;
+}
+
+.md-site-process .step-tab .num {
+	font-family: $font-heading;
+	font-style: italic;
+	font-size: 2.2rem;
+	color: $color-text-muted;
+	line-height: 1.2;
+	min-width: 32px;
+	transition: color 0.22s ease;
+}
+
+.md-site-process .step-tab.active .num {
+	color: $color-accent-primary;
+}
+
+.md-site-process .step-tab .ttl {
+	font-family: $font-heading;
+	font-size: 2rem;
+	line-height: 1.3;
+	color: $color-text-body;
+	font-weight: $font-weight-body-medium;
+}
+
+.md-site-process .step-tab.active .ttl {
+	color: $color-text-heading;
+}
+
+.md-site-process .process-panels {
+	min-width: 0;
+}
+
+.md-site-process .step-panel {
+	background-color: $color-bg-surface-warm;
+	border: 1px solid $color-border-default;
+	padding: clamp(32px, 4vw, 56px);
+	min-height: 460px;
+	animation: md-process-fade-in 0.5s ease both;
+}
+
+.md-site-process .step-panel[hidden] {
+	display: none;
+}
+
+.md-site-process .step-panel-head {
+	display: flex;
+	align-items: baseline;
+	gap: 18px;
+	margin-bottom: 8px;
+}
+
+.md-site-process .step-panel-head .pn {
+	font-family: $font-heading;
+	font-style: italic;
+	font-size: 2.2rem;
+	color: $color-accent-primary;
+}
+
+.md-site-process .step-panel-head .pl {
+	font-size: 12px;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: $color-eyebrow;
+	font-weight: 500;
+}
+
+.md-site-process .step-panel h3 {
+	font-family: $font-heading;
+	font-size: 3.4rem;
+	font-weight: $font-weight-heading;
+	font-style: normal;
+	color: $color-text-heading;
+	line-height: 1.2;
+	margin: 0 0 18px;
+	letter-spacing: $letter-spacing-heading-soft;
+	font-style: normal;
+}
+
+@media screen and (max-width: 720px) {
+	.md-site-process .step-panel h3 {
+		font-size: 2.6rem;
+	}
+}
+
+.md-site-process .step-panel .desc {
+	color: $color-text-soft;
+	margin-bottom: 32px;
+	max-width: 56ch;
+}
+
+.md-site-process .step-panel .bullets {
+	display: grid;
+	gap: 18px;
+	border-top: 1px solid $color-border-default;
+	padding-top: 28px;
+}
+
+.md-site-process .step-bullet {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 18px;
+	align-items: start;
+}
+
+.md-site-process .step-bullet .dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: $color-sage-green;
+	margin-top: 12px;
+	flex-shrink: 0;
+}
+
+.md-site-process .step-bullet h4 {
+	font-family: $font-body;
+	font-weight: $font-weight-body-medium;
+	font-size: 1.7rem;
+	color: $color-text-body;
+	margin: 0 0 4px;
+}
+
+.md-site-process .step-bullet p {
+	font-family: $font-body;
+	font-weight: $font-weight-body;
+	font-size: $font-size-body-small;
+	line-height: $line-height-body;
+	color: $color-text-soft;
+	margin: 0;
+}

@@ -1,0 +1,118 @@
+/* Levels of care grid (standalone components.jsx Care) */
+
+.md-site-care {
+	background-color: $color-bg-surface-warm;
+	border-top: 1px solid $color-border-default;
+	border-bottom: 1px solid $color-border-default;
+	padding: clamp(72px, 10vw, 128px) 0;
+}
+
+.md-site-care .care-head {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: clamp(32px, 6vw, 80px);
+	align-items: end;
+	margin-bottom: 0;
+}
+
+@media screen and (max-width: 760px) {
+	.md-site-care .care-head {
+		grid-template-columns: 1fr;
+	}
+}
+
+.md-site-care .eyebrow {
+	font-family: $font-body;
+	font-weight: 500;
+	font-size: 13px;
+	letter-spacing: $letter-spacing-eyebrow;
+	text-transform: uppercase;
+	color: $color-eyebrow;
+	margin: 0 0 18px;
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.md-site-care .eyebrow::before {
+	content: "";
+	width: 28px;
+	height: 1px;
+	background-color: $color-eyebrow;
+	display: inline-block;
+}
+
+.md-site-care .care-h2 {
+	font-size: $font-size-h2;
+	font-weight: $font-weight-heading;
+	line-height: $line-height-heading;
+	color: $color-text-heading;
+	letter-spacing: $letter-spacing-heading-soft;
+	margin: 0;
+}
+
+.md-site-care .care-intro {
+	color: $color-text-soft;
+	max-width: 48ch;
+	margin: 0;
+}
+
+.md-site-care .care-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 1px;
+	background-color: $color-border-default;
+	border: 1px solid $color-border-default;
+	margin-top: 56px;
+}
+
+@media screen and (max-width: 980px) {
+	.md-site-care .care-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media screen and (max-width: 560px) {
+	.md-site-care .care-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.md-site-care .care-card {
+	background-color: $color-bg-body;
+	padding: 36px 32px;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	transition: background-color 0.22s ease;
+	cursor: pointer;
+}
+
+.md-site-care .care-card:hover {
+	background-color: $color-bg-surface-warm;
+}
+
+.md-site-care .care-card .icon {
+	width: 36px;
+	height: 36px;
+	color: $color-eyebrow;
+	flex-shrink: 0;
+}
+
+.md-site-care .care-card h4 {
+	font-family: $font-heading;
+	font-size: 2.4rem;
+	font-weight: $font-weight-heading;
+	color: $color-text-heading;
+	margin: 0;
+	line-height: 1.25;
+}
+
+.md-site-care .care-card p {
+	font-family: $font-body;
+	font-size: 1.5rem;
+	line-height: 1.7;
+	color: $color-text-soft;
+	margin: 0;
+	flex: 1;
+}

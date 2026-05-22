@@ -1,0 +1,21 @@
+.notfound {
+    height: 60vh;
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    h1 {
+        font-family: Inter;
+        font-size: 160px;
+        color: #1d3766;
+        margin: 0;
+    }
+
+    p {
+        font-size: 24px;
+    }
+}

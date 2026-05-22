@@ -1,0 +1,15 @@
+name: meaningful-direction
+recipe: wordpress
+config:
+    webroot: web
+    composer_version: "2"
+services:
+    myservice:
+        type: phpmyadmin:5.2
+    appserver:
+        type: php:8.3
+        build:
+            - composer self-update
+    database:
+        overrides:
+            command: /lando-entrypoint.sh /opt/bitnami/scripts/mysql/entrypoint.sh /opt/bitnami/scripts/mysql/run.sh

@@ -1,0 +1,149 @@
+{
+    "name": "roots/bedrock",
+    "type": "project",
+    "license": "MIT",
+    "description": "WordPress boilerplate with Composer, easier configuration, and an improved folder structure",
+    "homepage": "https://roots.io/bedrock/",
+    "authors": [
+        {
+            "name": "Scott Walkinshaw",
+            "email": "scott.walkinshaw@gmail.com",
+            "homepage": "https://github.com/swalkinshaw"
+        },
+        {
+            "name": "Ben Word",
+            "email": "ben@benword.com",
+            "homepage": "https://github.com/retlehs"
+        }
+    ],
+    "keywords": [
+        "bedrock",
+        "composer",
+        "roots",
+        "wordpress",
+        "wp",
+        "wp-config"
+    ],
+    "support": {
+        "issues": "https://github.com/roots/bedrock/issues",
+        "forum": "https://discourse.roots.io/category/bedrock"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://WtjQ1DjBZIKcH8Vl3IJq28Uqf7lqFrN0:satispress@updates.sperlingsandbox.com/satispress/"
+        },
+        {
+            "type": "composer",
+            "url": "https://wpackagist.org",
+            "only": [
+                "wpackagist-plugin/*",
+                "wpackagist-theme/*"
+            ]
+        },
+        {
+            "type": "composer",
+            "url": "https://connect.advancedcustomfields.com"
+        },
+        {
+            "type": "composer",
+            "url": "https://wpmudev.com/"
+        },
+        {
+            "type": "composer",
+            "url": "https://composer.freemius.com/packages.json?authorization=Basic+bWlrZUBzcGVybGluZ2ludGVyYWN0aXZlLmNvbTpabEVmUmROOW1pVTdyTkZHYnhKZklWcGlHZzVJY1preDZqM2NhemtyM3VR"
+        },
+        {
+            "type": "composer",
+            "url": "https://composer.deliciousbrains.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.0",
+        "composer/installers": "^2.1",
+        "deliciousbrains-plugin/wp-migrate-db-pro": "*",
+        "freemius/theia-smart-thumbnails-premium": "^2.3.0",
+        "oscarotero/env": "^2.1",
+        "phpcsstandards/phpcsutils": "^1.0",
+        "roots/bedrock-autoloader": "^1.0",
+        "roots/bedrock-disallow-indexing": "^2.0",
+        "roots/wordpress": "*",
+        "roots/wp-config": "1.0.0",
+        "sperling/formidable-pro": "^6.22",
+        "vlucas/phpdotenv": "^5.4",
+        "wp-coding-standards/wpcs": "^2.3",
+        "wpackagist-plugin/akismet": "^5.3",
+        "wpackagist-plugin/formidable": "^6.22",
+        "wpengine/advanced-custom-fields-pro": "^6.0",
+        "wpackagist-plugin/disable-gutenberg":"*",
+        "wpackagist-plugin/regenerate-thumbnails":"*"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.9",
+        "roave/security-advisories": "dev-latest",
+        "phpcompatibility/php-compatibility": "^9.3"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/installers": true,
+            "roots/wordpress-core-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "installer-paths": {
+            "web/app/mu-plugins/{$name}/": [
+                "type:wordpress-muplugin"
+            ],
+            "web/app/plugins/{$name}/": [
+                "type:wordpress-plugin"
+            ],
+            "web/app/themes/{$name}/": [
+                "type:wordpress-theme"
+            ]
+        },
+        "wordpress-install-dir": "web/wp"
+    },
+    "scripts": {
+        "pre-operations-exec": "php -r \"file_exists('.env') ? '' : copy('.env.example', '.env');\"",
+        "post-install-cmd": [
+            "vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs,vendor/phpcompatibility/php-compatibility,vendor/phpcsstandards/phpcsutils,vendor/phpcsstandards/phpcsextra"
+        ],
+        "post-update-cmd": [
+            "rm -rf web/app/themes/twentyten",
+            "rm -rf web/app/themes/twentyeleven",
+            "rm -rf web/app/themes/twentytwelve",
+            "rm -rf web/app/themes/twentythirteen",
+            "rm -rf web/app/themes/twentyfourteen",
+            "rm -rf web/app/themes/twentyfifteen",
+            "rm -rf web/app/themes/twentysixteen",
+            "rm -rf web/app/themes/twentyseventeen",
+            "rm -rf web/app/themes/twentynineteen",
+            "rm -rf web/app/themes/twentytwenty",
+            "rm -rf web/app/themes/twentytwentyone",
+            "rm -rf web/app/themes/twentytwentytwo",
+            "rm -rf web/app/themes/twentytwentythree",
+            "rm -rf web/app/plugins/hello.php"
+        ],
+        "test": [
+            "phpcs --report=full web/app/themes/sperling-starter-theme --standard=Wordpress --ignore=*/node_modules/*,*/vendor/* --extensions=php"
+        ],
+        "test-config": [
+            "phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs,vendor/phpcompatibility/php-compatibility,vendor/phpcsstandards/phpcsutils,vendor/phpcsstandards/phpcsextra"
+        ],
+        "test-dev": [
+            "phpcs --report=full --colors -p --standard=Wordpress --ignore=*/node_modules/*,*/vendor/* web/app/themes/sperling-starter-theme/ --extensions=php"
+        ],
+        "test-fix": [
+            "phpcbf -p web/app/themes/sperling-starter-theme --standard=Wordpress --ignore=*/node_modules/*,*/vendor/* --extensions=php"
+        ],
+        "wp-activate": [
+            "php scripts/wp-install.php"
+        ]
+    }
+}

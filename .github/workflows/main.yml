@@ -1,0 +1,359 @@
+name: build-deploy
+
+on:
+    push:
+        branches:
+            - develop
+            - main
+        paths-ignore:
+            - 'README.md'
+
+jobs:
+    deploy:
+        name: Deploy to ${{ github.ref == 'refs/heads/main' && 'Production' || 'Staging' }}
+        runs-on: self-hosted
+        timeout-minutes: 30
+        if: false  # Workflow disabled temporarily
+        
+        env:
+            # Update these with your server details
+            SSH_USER: root                                                                      # Your server SSH user
+            SSH_HOST: 34.198.16.179                                                             # Server IP or domain
+            WORK_REPO: git@github.com:sperling-interactive/sperling-wp-boilerplate-v3.git       # Your repo URL
+            WORK_DIR: public_html/                                                              # Where files go on server
+            THEME_NAME: sperling-starter-theme                                                  # Theme name
+            
+            # These change based on which branch you're deploying
+            # develop -> staging, main -> production
+            CPANEL_USER: ${{ github.ref == 'refs/heads/main' && 'produser' || 'luitestsperlings' }}    # Server user for deployment
+            DEPLOY_BRANCH: ${{ github.ref == 'refs/heads/main' && 'main' || 'develop' }}               # Git branch to deploy
+            ENV_NAME: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Staging' }}              # Environment name
+
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Get Runner IP
+              run: |
+                  echo "Deploying to: ${{ env.ENV_NAME }}"
+                  echo "Runner IP is $(curl -s https://ifconfig.me)"
+
+            - name: Setup SSH Agent
+              uses: webfactory/ssh-agent@v0.9.0
+              with:
+                  ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+            - name: Test Server Connection
+              timeout-minutes: 2
+              run: |
+                  # Skip host key checking - we trust this server
+                  if ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -o "BatchMode=yes" -o "ConnectTimeout=10" $SSH_USER@$SSH_HOST "echo 'Connected'"
+                  then
+                      echo "Connected to server successfully"
+                  else
+                      echo "Failed to connect to server"
+                      exit 1
+                  fi
+
+            - name: Check GitHub SSH Access
+              id: github_ssh_check
+              timeout-minutes: 5
+              run: |
+                  echo "Checking if $CPANEL_USER can access GitHub..."
+                  set +e
+                  
+                  ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" $SSH_USER@$SSH_HOST bash <<'ENDSSH'
+                  set +e
+                  
+                  su - ${{ env.CPANEL_USER }} <<'ENDSU'
+                  set +e
+                  
+                  SSH_DIR="$HOME/.ssh"
+                  SSH_KEY="$SSH_DIR/github_actions_key"
+                  SSH_PUB_KEY="${SSH_KEY}.pub"
+                  
+                  echo "Testing GitHub access for $(whoami)..."
+                  
+                  ssh -T -o "StrictHostKeyChecking=accept-new" -o "ConnectTimeout=10" git@github.com 2>&1 | tee /tmp/github_check.log
+                  
+                  if grep -q "successfully authenticated" /tmp/github_check.log; then
+                      echo "STATUS:SUCCESS"
+                      echo "Great! GitHub connection works"
+                      rm -f /tmp/github_check.log
+                      exit 0
+                  fi
+                  
+                  echo "STATUS:FAILED"
+                  echo "Can't connect to GitHub yet - attempting to set up SSH keys..."
+                  rm -f /tmp/github_check.log
+                  
+                  ENDSU
+                  
+                  # Copy SSH keys from root to cPanel user
+                  echo "Setting up SSH keys for ${{ env.CPANEL_USER }}..."
+                  
+                  if [ ! -f ~/.ssh/github_actions_key ]; then
+                      echo "ERROR: Root's github_actions_key not found at ~/.ssh/github_actions_key"
+                      echo "Please ensure the SSH key exists in root's .ssh directory"
+                      exit 1
+                  fi
+                  
+                  mkdir -p /home/${{ env.CPANEL_USER }}/.ssh
+                  
+                  cp ~/.ssh/github_actions_key /home/${{ env.CPANEL_USER }}/.ssh/
+                  cp ~/.ssh/github_actions_key.pub /home/${{ env.CPANEL_USER }}/.ssh/
+                  
+                  # Setup SSH config to use the key
+                  {
+                      echo "Host github.com"
+                      echo "    HostName github.com"
+                      echo "    User git"
+                      echo "    IdentityFile ~/.ssh/github_actions_key"
+                      echo "    IdentitiesOnly yes"
+                  } > /home/${{ env.CPANEL_USER }}/.ssh/config
+                  
+                  # Fix permissions
+                  chown -R ${{ env.CPANEL_USER }}:${{ env.CPANEL_USER }} /home/${{ env.CPANEL_USER }}/.ssh
+                  chmod 700 /home/${{ env.CPANEL_USER }}/.ssh
+                  chmod 600 /home/${{ env.CPANEL_USER }}/.ssh/github_actions_key
+                  chmod 600 /home/${{ env.CPANEL_USER }}/.ssh/config
+                  chmod 644 /home/${{ env.CPANEL_USER }}/.ssh/github_actions_key.pub
+                  
+                  echo "SSH keys copied and configured for ${{ env.CPANEL_USER }}"
+                  
+                  # Try connecting again
+                  su - ${{ env.CPANEL_USER }} <<'ENDSU2'
+                  set +e
+                  
+                  echo "Testing GitHub access again after key setup..."
+                  ssh -T -o "StrictHostKeyChecking=accept-new" -o "ConnectTimeout=10" git@github.com 2>&1 | tee /tmp/github_check_retry.log
+                  
+                  if grep -q "successfully authenticated" /tmp/github_check_retry.log; then
+                      echo "STATUS:SUCCESS"
+                      echo "GitHub connection now works!"
+                      rm -f /tmp/github_check_retry.log
+                      exit 0
+                  else
+                      echo "STATUS:STILL_FAILED"
+                      echo "SSH keys were copied but GitHub connection still fails"
+                      echo "The github_actions_key may not be added to GitHub yet"
+                      echo ""
+                      echo "Add this public key to GitHub:"
+                      echo "---"
+                      cat ~/.ssh/github_actions_key.pub
+                      echo "---"
+                      echo "Add the key here: https://github.com/settings/ssh/new"
+                      rm -f /tmp/github_check_retry.log
+                      exit 1
+                  fi
+                  
+                  ENDSU2
+                  ENDSSH
+                  
+                  if [ $? -eq 0 ]; then
+                      echo "github_connected=true" >> $GITHUB_OUTPUT
+                      echo "Moving forward with deployment..."
+                  else
+                      echo "github_connected=false" >> $GITHUB_OUTPUT
+                      echo "GitHub SSH access still not working"
+                      exit 0
+                  fi
+
+            - name: Deploy Application
+              if: steps.github_ssh_check.outputs.github_connected == 'true'
+              timeout-minutes: 20
+              run: |
+                  set -e
+                  echo "Starting ${{ env.ENV_NAME }} deployment..."
+                  
+                  ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" $SSH_USER@$SSH_HOST bash <<'ENDSSH'
+                  set -e
+                  
+                  su - ${{ env.CPANEL_USER }} <<'ENDSU'
+                  set -e
+                  
+                  echo "Deploying ${{ env.ENV_NAME }} as $(whoami) to ${{ env.WORK_DIR }}"
+                  
+                  # Setup working directory
+                  [ ! -d "${{ env.WORK_DIR }}" ] && mkdir -p ${{ env.WORK_DIR }}
+                  cd ${{ env.WORK_DIR }}
+                  
+                  # Clone or pull repository
+                  if [ ! -d ".git" ]; then
+                      echo "Fresh install - cleaning up directory..."
+                      find . -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+                      echo "Cloning repository..."
+                      git clone ${{ env.WORK_REPO }} .
+                      echo "Done cloning!"
+                  else
+                      echo "Pulling latest code..."
+                      git pull origin ${{ env.DEPLOY_BRANCH }}
+                      echo "Code updated!"
+                  fi
+                  
+                  # Install Composer dependencies
+                  echo ""
+                  echo "Installing dependencies..."
+                  composer install --no-interaction --prefer-dist --optimize-autoloader
+                  
+                  # Setup .env file
+                  echo ""
+                  echo "Setting up environment config..."
+                  
+                  # Save existing salts if they exist
+                  PRESERVE_SALTS=false
+                  if [ -f .env ] && grep -q "AUTH_KEY=" .env && ! grep -q "AUTH_KEY='generateme'" .env; then
+                      echo "Keeping existing WordPress salts..."
+                      PRESERVE_SALTS=true
+                      SALTS=$(grep -E "^(AUTH_KEY|SECURE_AUTH_KEY|LOGGED_IN_KEY|NONCE_KEY|AUTH_SALT|SECURE_AUTH_SALT|LOGGED_IN_SALT|NONCE_SALT)=" .env)
+                  fi
+                  
+                  if [ -f .env.example ]; then
+                      cp .env.example .env
+                      echo "Copied .env.example"
+                  else
+                      echo "No .env.example found, creating fresh .env"
+                      touch .env
+                  fi
+                  
+                  # Update .env with secrets (PROD_* for production, regular for staging)
+                  # Note: Using printf instead of sed since passwords can have weird characters
+                  
+                  update_env_var() {
+                      local key="$1"
+                      local value="$2"
+                      grep -v "^${key}=" .env > .env.tmp 2>/dev/null || cp .env .env.tmp
+                      mv .env.tmp .env
+                      printf "%s='%s'\n" "$key" "$value" >> .env
+                  }
+                  
+                  update_env_var "DB_NAME" '${{ github.ref == 'refs/heads/main' && secrets.PROD_DB_NAME || secrets.DB_NAME }}'
+                  update_env_var "DB_USER" '${{ github.ref == 'refs/heads/main' && secrets.PROD_DB_USER || secrets.DB_USER }}'
+                  update_env_var "DB_PASSWORD" '${{ github.ref == 'refs/heads/main' && secrets.PROD_DB_PASSWORD || secrets.DB_PASSWORD }}'
+                  update_env_var "DB_HOST" '${{ github.ref == 'refs/heads/main' && secrets.PROD_DB_HOST || secrets.DB_HOST }}'
+                  update_env_var "WP_ENV" '${{ github.ref == 'refs/heads/main' && secrets.PROD_WP_ENV || secrets.WP_ENV }}'
+                  update_env_var "WP_HOME" '${{ github.ref == 'refs/heads/main' && secrets.PROD_WP_HOME || secrets.WP_HOME }}'
+                  update_env_var "WP_SITEURL" '${{ github.ref == 'refs/heads/main' && secrets.PROD_WP_HOME || secrets.WP_HOME }}/wp'
+                  update_env_var "WP_TITLE" '${{ github.ref == 'refs/heads/main' && secrets.PROD_WP_TITLE || secrets.WP_TITLE }}'
+                  update_env_var "WP_THEME" '${{ env.THEME_NAME }}'
+                  update_env_var "ACF_PRO_KEY" '${{ secrets.ACF_PRO_KEY }}'
+                  
+                  # Handle WordPress salts
+                  if [ "$PRESERVE_SALTS" = true ]; then
+                      sed -i "/AUTH_KEY=/d; /SECURE_AUTH_KEY=/d; /LOGGED_IN_KEY=/d; /NONCE_KEY=/d; /AUTH_SALT=/d; /SECURE_AUTH_SALT=/d; /LOGGED_IN_SALT=/d; /NONCE_SALT=/d" .env
+                      echo "" >> .env
+                      echo "# WordPress Salts (Preserved)" >> .env
+                      echo "$SALTS" >> .env
+                      echo "Salts preserved"
+                  else
+                      if grep -q "AUTH_KEY='generateme'" .env 2>/dev/null || ! grep -q "AUTH_KEY=" .env 2>/dev/null; then
+                          echo "Generating fresh WordPress salts..."
+                          FRESH_SALTS=$(curl -sL https://api.wordpress.org/secret-key/1.1/salt/ | sed "s/define('\([^']*\)', *'\([^']*\)');/\1='\2'/g")
+                          
+                          if [ -n "$FRESH_SALTS" ]; then
+                              sed -i "/AUTH_KEY=/d; /SECURE_AUTH_KEY=/d; /LOGGED_IN_KEY=/d; /NONCE_KEY=/d; /AUTH_SALT=/d; /SECURE_AUTH_SALT=/d; /LOGGED_IN_SALT=/d; /NONCE_SALT=/d" .env
+                              echo "" >> .env
+                              echo "# WordPress Salts (Auto-generated)" >> .env
+                              echo "$FRESH_SALTS" >> .env
+                              echo "New salts generated"
+                          else
+                              echo "Warning: Couldn't fetch salts from WordPress.org"
+                          fi
+                      else
+                          echo "Using salts from .env.example"
+                      fi
+                  fi
+                  
+                  chmod 600 .env
+                  echo "Environment configured"
+                  
+                  # Check WordPress installation
+                  echo ""
+                  echo "Checking WordPress..."
+                  
+                  WP_INSTALLED=false
+                  if [ -f "web/wp/wp-config.php" ] && wp core is-installed --path=web/wp 2>/dev/null; then
+                      WP_INSTALLED=true
+                      echo "WordPress is installed ($(wp core version --path=web/wp 2>/dev/null || echo 'Unknown'))"
+                  fi
+                  
+                  if [ "$WP_INSTALLED" = false ]; then
+                      echo "Setting up WordPress..."
+                      composer wp-activate
+                      [ $? -eq 0 ] && echo "WordPress setup complete" || echo "Warning: Setup had an issue"
+                  fi
+                  
+                  # Build theme assets
+                  echo ""
+                  echo "Building theme..."
+                  
+                  if [ -d "web/app/themes/${{ env.THEME_NAME }}" ]; then
+                      cd "web/app/themes/${{ env.THEME_NAME }}"
+                      
+                      # Install npm packages if needed
+                      if [ ! -d "node_modules" ]; then
+                          echo "Installing npm packages..."
+                          npm install && echo "npm packages installed" || echo "Warning: npm install had issues"
+                      else
+                          echo "npm packages already installed"
+                      fi
+                      
+                      # Run Gulp build
+                      if [ -f "node_modules/.bin/gulp" ]; then
+                          echo "Running gulp build..."
+                          ./node_modules/.bin/gulp build && echo "Build done" || echo "Warning: Build had issues"
+                          
+                          echo "Creating release..."
+                          ./node_modules/.bin/gulp release && echo "Release ready" || echo "Warning: Release had issues"
+                      else
+                          echo "Warning: Gulp not found"
+                      fi
+                      
+                      cd - > /dev/null
+                  else
+                      echo "Warning: Theme directory not found"
+                  fi
+                  
+                  echo ""
+                  echo "${{ env.ENV_NAME }} deployment finished!"
+                  ENDSU
+                  ENDSSH
+                  
+                  echo "${{ env.ENV_NAME }} is now live!"
+
+            - name: Purge LiteSpeed Cache
+              if: steps.github_ssh_check.outputs.github_connected == 'true'
+              timeout-minutes: 2
+              run: |
+                  echo "Purging LiteSpeed cache..."
+                  
+                  ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" $SSH_USER@$SSH_HOST bash <<'ENDSSH'
+                  set +e
+                  
+                  su - ${{ env.CPANEL_USER }} <<'ENDSU'
+                  set +e
+                  
+                  cd ${{ env.WORK_DIR }}
+                  
+                  # Purge all LiteSpeed cache using WP-CLI
+                  if wp litespeed-purge all --path=web/wp 2>/dev/null; then
+                      echo "LiteSpeed cache purged successfully!"
+                  else
+                      echo "Note: LiteSpeed cache purge command not available or failed"
+                      echo "This may happen if the LiteSpeed Cache plugin is not active"
+                  fi
+                  
+                  ENDSU
+                  ENDSSH
+                  
+                  echo "Cache purge step completed"
+            
+            - name: Deployment Blocked
+              if: steps.github_ssh_check.outputs.github_connected != 'true'
+              run: |
+                  echo ""
+                  echo "Can't deploy right now"
+                  echo "User '${{ env.CPANEL_USER }}' needs GitHub SSH access"
+                  echo "Add the key here: https://github.com/settings/ssh/new"
+                  echo "Make sure the key has read access to this repo"
+                  exit 1

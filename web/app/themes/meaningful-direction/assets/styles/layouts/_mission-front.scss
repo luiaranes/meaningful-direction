@@ -1,0 +1,51 @@
+/* Meaningful Direction — Mission / Vision strip (standalone prototype) */
+
+.mission.md-site-mission {
+	background-color: $color-bg-surface-warm;
+	border-top: 1px solid $color-border-default;
+	border-bottom: 1px solid $color-border-default;
+	padding: clamp(72px, 10vw, 128px) 0;
+}
+
+.mission.md-site-mission .mission-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: clamp(40px, 6vw, 80px);
+}
+
+@media screen and (max-width: 760px) {
+	.mission.md-site-mission .mission-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.mission.md-site-mission .mission-block .mission-label {
+	font-family: $font-body;
+	font-size: 12px;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: $color-eyebrow;
+	margin-bottom: 18px;
+	font-weight: 500;
+}
+
+.mission.md-site-mission .mission-block .mission-text {
+	font-family: $font-heading;
+	font-size: $font-size-h4;
+	font-weight: 400;
+	line-height: 1.4;
+	color: $color-text-heading;
+	margin: 0;
+}
+
+@media screen and (max-width: 720px) {
+	.mission.md-site-mission .mission-block .mission-text {
+		font-size: 2.2rem;
+	}
+}
+
+.mission.md-site-mission .mission-block .mission-text em {
+	font-style: italic;
+	font-weight: $font-weight-heading-em;
+	color: $color-accent-primary-strong;
+}

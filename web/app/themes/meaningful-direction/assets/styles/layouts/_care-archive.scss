@@ -1,0 +1,43 @@
+/* Care type post archive (/care-types/) — extended care grid cards as links */
+
+.md-archive-care-grid .care-card--link {
+	box-sizing: border-box;
+	width: 100%;
+	color: inherit;
+	text-decoration: none;
+	align-items: flex-start;
+
+	&:focus {
+		outline: none;
+	}
+
+	&:focus-visible {
+		outline: 2px solid $color-text-heading;
+		outline-offset: 3px;
+	}
+}
+
+.md-site-care .care-card--link:hover {
+	cursor: pointer;
+}
+
+/* Match homepage card typography; archive uses semantic h2 per card under page h1 */
+.md-site-care .care-card-heading {
+	font-family: $font-heading;
+	font-size: 2.4rem;
+	font-weight: $font-weight-heading;
+	color: $color-text-heading;
+	margin: 0;
+	line-height: 1.25;
+}
+
+.md-archive-care-types .care-archive-empty {
+	margin: 48px 0 0;
+	font-size: 1.5rem;
+	color: $color-text-soft;
+	max-width: 48ch;
+}
+
+.md-archive-care-types .pagination {
+	margin-top: clamp(32px, 5vw, 56px);
+}

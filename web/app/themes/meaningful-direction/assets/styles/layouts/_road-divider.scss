@@ -1,0 +1,21 @@
+/* Road divider — gold + blue dashed curves (standalone / components.jsx RoadDivider) */
+
+.road {
+	display: block;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	pointer-events: none;
+	user-select: none;
+}
+
+.road svg {
+	display: block;
+	width: 100%;
+	height: clamp(36px, 4vw, 56px);
+	overflow: visible;
+}
+
+.road-section {
+	padding: clamp(4px, 0.6vw, 8px) 0;
+}

@@ -1,0 +1,200 @@
+/* Meaningful Direction — front hero (standalone prototype) */
+
+.hero.md-site-hero {
+	position: relative;
+	overflow: hidden;
+	padding-top: clamp(20px, 3vw, 40px);
+	padding-bottom: clamp(48px, 7vw, 88px);
+
+	.eyebrow {
+		font-family: $font-body;
+		font-weight: 500;
+		font-size: 13px;
+		letter-spacing: $letter-spacing-eyebrow;
+		text-transform: uppercase;
+		color: $color-eyebrow;
+		margin: 0 0 18px;
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+	}
+
+	.eyebrow::before {
+		content: "";
+		width: 28px;
+		height: 1px;
+		background-color: $color-eyebrow;
+		display: inline-block;
+	}
+
+	h1.h1 {
+		font-family: $font-heading;
+		font-weight: $font-weight-heading;
+		font-size: $font-size-h1;
+		line-height: $line-height-heading-tight;
+		color: $color-text-heading;
+		letter-spacing: $letter-spacing-heading;
+		margin: 0;
+
+		.em {
+			font-style: italic;
+			color: $color-accent-primary;
+			font-weight: $font-weight-heading-em;
+		}
+	}
+
+	.hero-sub {
+		font-family: $font-body;
+		font-weight: $font-weight-body;
+		margin: 28px 0 36px;
+		max-width: 540px;
+		font-size: 1.9rem;
+		line-height: $line-height-body;
+		color: $color-text-soft;
+	}
+
+	.hero-ctas {
+		display: flex;
+		gap: 14px;
+		flex-wrap: wrap;
+	}
+
+	.hero-meta {
+		display: flex;
+		gap: 40px;
+		flex-wrap: wrap;
+		margin-top: 48px;
+		padding-top: 28px;
+		border-top: 1px solid $color-border-default;
+	}
+
+	.hero-meta-item .num {
+		font-family: $font-heading;
+		font-size: 3.6rem;
+		font-weight: $font-weight-heading;
+		color: $color-text-heading;
+		line-height: 1;
+	}
+
+	.hero-meta-item .lbl {
+		font-size: 13px;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: $color-text-muted;
+		margin-top: 8px;
+		font-weight: $font-weight-body-medium;
+		font-family: $font-body;
+		line-height: 1.4;
+	}
+
+	.hero-grid {
+		display: grid;
+		grid-template-columns: 1.05fr 0.95fr;
+		gap: clamp(32px, 6vw, 80px);
+		align-items: center;
+	}
+
+	.hero-image-stack {
+		position: relative;
+	}
+
+	.placeholder.hero-image {
+		aspect-ratio: 4 / 5;
+		border-radius: 2px;
+		background-color: $color-bg-surface-warm;
+		background-image: repeating-linear-gradient(
+			135deg,
+			transparent 0,
+			transparent 14px,
+			rgba(168, 92, 62, 0.08) 14px,
+			rgba(168, 92, 62, 0.08) 15px
+		);
+		border: 1px solid $color-border-default;
+		display: flex;
+		align-items: flex-end;
+		justify-content: flex-start;
+		padding: 16px;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.hero-image:not(.placeholder) {
+		aspect-ratio: 4 / 5;
+		border-radius: 2px;
+		border: 1px solid $color-border-default;
+		overflow: hidden;
+		position: relative;
+		display: block;
+	}
+
+	.hero-image__img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		display: block;
+	}
+
+	.placeholder .ph-label {
+		font-family: ui-monospace, "SF Mono", Menlo, monospace;
+		font-size: 11px;
+		letter-spacing: 0.04em;
+		color: $color-text-muted;
+		background-color: $color-bg-body;
+		padding: 4px 8px;
+		border: 1px solid $color-border-default;
+		border-radius: 2px;
+	}
+
+	.hero-image-stack .accent-card {
+		position: absolute;
+		bottom: -28px;
+		left: -28px;
+		background-color: $color-bg-surface-warm;
+		border: 1px solid $color-border-default;
+		padding: 22px 26px;
+		max-width: 280px;
+		box-shadow: 0 20px 40px -24px rgb(58 50 40 / 18%);
+	}
+
+	.hero-image-stack .accent-card .quote {
+		font-family: $font-heading;
+		font-style: italic;
+		font-size: 1.9rem;
+		line-height: 1.4;
+		color: $color-text-heading;
+		margin: 0 0 10px;
+	}
+
+	.hero-image-stack .accent-card .src {
+		font-size: 12px;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: $color-text-muted;
+		font-family: $font-body;
+	}
+}
+
+@media screen and (max-width: 880px) {
+	.hero.md-site-hero .hero-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.hero.md-site-hero .hero-image-stack .accent-card {
+		position: static;
+		max-width: 100%;
+		margin-top: 24px;
+		box-shadow: 0 12px 28px -20px rgb(58 50 40 / 15%);
+	}
+}
+
+@media screen and (max-width: 720px) {
+	.hero.md-site-hero h1.h1 {
+		font-size: 3.6rem;
+		letter-spacing: $letter-spacing-heading-soft;
+	}
+
+	.hero.md-site-hero .hero-sub {
+		font-size: $font-size-body-small;
+	}
+}
