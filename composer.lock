@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8a4a5cc5acddef4aa6bcf69eedb10f6c",
+    "content-hash": "1e9ef03b34e4c1403d8adb9e86390dbe",
     "packages": [
         {
             "name": "composer/installers",
@@ -253,7 +253,7 @@
             "version": "2.3.1",
             "dist": {
                 "type": "zip",
-                "url": "https://api.freemius.com/v1/users/436631/plugins/2367/updates/download.zip?auth_date=Fri%2C+22+May+2026+01%3A14%3A25+%2B0000&authorization=FSE+436631%3AXrex1-r2sudLW4OCQf6SUmkm4Oersofdd8YwjalR-SjzxFoZhyGtDh8tOK3ohRzbQR9tJz15wP7wQUVOi8JHT52u7lJl4mkCVVyEGcPZ7oT95tNZWFXui7Y0WehKOhga2SYmEgPw8UKhPCR2wdM0GmTn-CnqCw9DzOVj9t5I_Z2Hk10WTSt_ZcuW0FRhOEQh"
+                "url": "https://api.freemius.com/v1/users/436631/plugins/2367/updates/download.zip?auth_date=Fri%2C+22+May+2026+18%3A50%3A57+%2B0000&authorization=FSE+436631%3ANEVyx6D5kGN9TR0PU-UuZEcG9M1Lpo1eKHnoaB6LnUhKrev6i6lJTacM9P0pp8mzHELoCCGzcJa31FSUIfGTie-7OOEK6Yqt2Ci98GcIIBnEYn3JZdv_f-AibrDOSfp6y6Vu1MaQXYZmvXy2xdWpgiBtsydPsgGl8tlsMKzPMtatOWpjKlFJtCPrhhDbhvw3"
             },
             "require": {
                 "composer/installers": "~1.0 || ~2.0"
@@ -1458,6 +1458,24 @@
             "homepage": "https://wordpress.org/plugins/formidable/"
         },
         {
+            "name": "wpackagist-plugin/redirection",
+            "version": "5.7.5",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/redirection/",
+                "reference": "tags/5.7.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/redirection.5.7.5.zip"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/redirection/"
+        },
+        {
             "name": "wpackagist-plugin/regenerate-thumbnails",
             "version": "3.1.6",
             "source": {
@@ -1474,6 +1492,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/regenerate-thumbnails/"
+        },
+        {
+            "name": "wpackagist-plugin/wordpress-seo",
+            "version": "27.6",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/wordpress-seo/",
+                "reference": "tags/27.6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.27.6.zip"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/wordpress-seo/"
         },
         {
             "name": "wpengine/advanced-custom-fields-pro",
@@ -1561,12 +1597,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "21c2b457ed7139d838217f22d48985e5e2f80e5f"
+                "reference": "89aea44a53fbe571a89140af23654bd1c4d85bf6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/21c2b457ed7139d838217f22d48985e5e2f80e5f",
-                "reference": "21c2b457ed7139d838217f22d48985e5e2f80e5f",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/89aea44a53fbe571a89140af23654bd1c4d85bf6",
+                "reference": "89aea44a53fbe571a89140af23654bd1c4d85bf6",
                 "shasum": ""
             },
             "conflict": {
@@ -2540,7 +2576,7 @@
                 "xpressengine/xpressengine": "<3.0.15",
                 "yab/quarx": "<2.4.5",
                 "yansongda/pay": "<=3.7.19",
-                "yeswiki/yeswiki": "<=4.6",
+                "yeswiki/yeswiki": "<4.6.4",
                 "yetiforce/yetiforce-crm": "<6.5",
                 "yidashi/yii2cmf": "<=2",
                 "yii2mod/yii2-cms": "<1.9.2",
@@ -2635,7 +2671,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-21T21:34:10+00:00"
+            "time": "2026-05-22T16:47:49+00:00"
         }
     ],
     "aliases": [],
