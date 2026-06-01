@@ -474,7 +474,17 @@ while (have_posts()) :
 			)); ?></p>
 		</div>
 
-		<div class="team-grid md-about-team-grid" role="list">
+		<?php
+		$team_col_count = count($team_rows);
+		$team_portrait_sizes = sprintf(
+			'(min-width: 881px) %dvw, 100vw',
+			(int) max(20, min(100, (int) floor(100 / max($team_col_count, 1))))
+		);
+		?>
+		<div
+			class="team-grid md-about-team-grid<?php echo $team_col_count === 4 ? ' team-grid--count-4' : ''; ?>"
+			style="--team-cols: <?php echo (int) max($team_col_count, 1); ?>;"
+			role="list">
 			<?php foreach ($team_rows as $m) : ?>
 			<div class="team-card" role="listitem">
 				<?php if (! empty($m['image_id'])) : ?>
@@ -488,7 +498,7 @@ while (have_posts()) :
 								'class'    => 'team-portrait__img',
 								'loading'  => 'lazy',
 								'decoding' => 'async',
-								'sizes'    => '(min-width: 881px) 33vw, 100vw',
+								'sizes'    => $team_portrait_sizes,
 							)
 						);
 						?>

@@ -307,7 +307,7 @@
 
 	.team-grid {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(var(--team-cols, 3), minmax(0, 1fr));
 		gap: 1px;
 		background-color: $color-border-default;
 		border: 1px solid $color-border-default;
@@ -319,6 +319,28 @@
 
 		@media screen and (max-width: 600px) {
 			grid-template-columns: 1fr;
+		}
+	}
+
+	.team-grid--count-4 {
+		@media screen and (min-width: 881px) {
+			.team-body {
+				padding: 22px 20px 28px;
+			}
+
+			.team-name {
+				font-size: 2.25rem;
+			}
+
+			.team-role {
+				font-size: 1.55rem;
+				margin-bottom: 12px;
+			}
+
+			.team-bio {
+				font-size: 14px;
+				line-height: 1.65;
+			}
 		}
 	}
 
