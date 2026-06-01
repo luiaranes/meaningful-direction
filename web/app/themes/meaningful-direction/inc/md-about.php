@@ -139,10 +139,16 @@ function md_about_parse_team_rows($rows, int $post_id): array
 	}
 	$out      = array();
 	$incoming = array_values(array_filter($rows, 'is_array'));
-	for ($i = 0; $i < count($defs); $i++) {
-		$row = isset($incoming[$i]) ? $incoming[$i] : null;
+	$count    = max(count($incoming), count($defs));
+
+	for ($i = 0; $i < $count; $i++) {
+		$row = isset($incoming[ $i ]) ? $incoming[ $i ] : null;
+		$def = isset($defs[ $i ]) ? $defs[ $i ] : null;
+
 		if (!is_array($row)) {
-			$out[] = $defs[ $i ];
+			if ($def !== null) {
+				$out[] = $def;
+			}
 			continue;
 		}
 		$name = trim((string) ($row['about_team_name'] ?? ''));
@@ -150,18 +156,26 @@ function md_about_parse_team_rows($rows, int $post_id): array
 		$cred = trim((string) ($row['about_team_cred'] ?? ''));
 		$bio  = trim((string) ($row['about_team_bio'] ?? ''));
 		if ($name === '' || $role === '' || $bio === '') {
-			$out[] = $defs[ $i ];
+			if ($def !== null) {
+				$out[] = $def;
+			}
 			continue;
 		}
-		if ($cred === '') {
-			$cred = $defs[ $i ]['cred'];
+		if ($cred === '' && $def !== null) {
+			$cred = $def['cred'];
 		}
 		$image_id = 0;
 		if (!empty($row['about_team_photo']) && is_array($row['about_team_photo']) && !empty($row['about_team_photo']['ID'])) {
 			$image_id = (int) $row['about_team_photo']['ID'];
 		}
 		$img_lbl_raw = isset($row['about_team_photo_label']) ? trim((string) $row['about_team_photo_label']) : '';
-		$image_label = $img_lbl_raw !== '' ? $img_lbl_raw : $defs[ $i ]['image_label'];
+		if ($img_lbl_raw !== '') {
+			$image_label = $img_lbl_raw;
+		} elseif ($def !== null) {
+			$image_label = $def['image_label'];
+		} else {
+			$image_label = __('portrait', 'html5blank');
+		}
 		$out[] = array(
 			'name'        => $name,
 			'role'        => $role,

@@ -242,7 +242,7 @@ add_action(
 					'label'        => __('Team cards', 'html5blank'),
 					'name'         => 'about_team',
 					'type'         => 'repeater',
-					'instructions' => __('Leave empty for built-in three profiles.', 'html5blank'),
+					'instructions' => __('Leave empty for built-in three profiles. Add rows for additional team members.', 'html5blank'),
 					'collapsed'    => 'field_md_about_tm_name',
 					'min'          => 0,
 					'max'          => 0,
